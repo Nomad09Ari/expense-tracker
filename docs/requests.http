@@ -32,8 +32,8 @@ Content-Type: application/json
 {
   "amount": 12000,
   "category": "food",
-  "note": "Өдрийн хоол",
-  "date": "2026-03-02"
+  "note": "昼食",
+  "date": "2026-08-20"
 }
 
 
@@ -44,7 +44,7 @@ Content-Type: application/json
 {
   "amount": 3500,
   "category": "transport",
-  "date": "2026-03-02"
+  "date": "2026-08-20"
 }
 
 
@@ -58,9 +58,9 @@ POST {{host}}/api/expenses
 Content-Type: application/json
 
 {
-  "amount": "гурван мянга",
+  "amount": "三千円",
   "category": "food",
-  "date": "2026-03-02"
+  "date": "2026-08-20"
 }
 
 
@@ -72,7 +72,7 @@ Content-Type: application/json
 {
   "amount": -500,
   "category": "food",
-  "date": "2026-03-02"
+  "date": "2026-08-20"
 }
 
 
@@ -83,7 +83,7 @@ Content-Type: application/json
 
 {
   "category": "food",
-  "date": "2026-03-02"
+  "date": "2026-08-20"
 }
 
 
@@ -95,7 +95,7 @@ Content-Type: application/json
 {
   "amount": 5000,
   "category": "puppies",
-  "date": "2026-03-02"
+  "date": "2026-08-20"
 }
 
 
@@ -145,30 +145,82 @@ Content-Type: application/json
 
 {
   "email": "bat@example.com",
-  "password": "nuutsug123"
+  "password": "password123",
+  "passwordConfirm": "password123"
 }
 
 
-### Ижил и-мэйлээр дахин бүртгүүлэх
+### passwordConfirm таарахгүй
+# Хүлээж байгаа: 400 +「パスワードが一致しません」
+POST {{host}}/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "shine1@example.com",
+  "password": "password123",
+  "passwordConfirm": "password999"
+}
+
+
+### passwordConfirm огт байхгүй
+# Браузерыг тойрч шууд илгээж байна. Сервер зогсоох ЁСТОЙ.
 # Хүлээж байгаа: 400
 POST {{host}}/api/auth/register
 Content-Type: application/json
 
 {
+  "email": "shine2@example.com",
+  "password": "password123"
+}
+
+
+### Нууц үг хэт богино (7 тэмдэгт)
+# Хүлээж байгаа: 400
+POST {{host}}/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "shine3@example.com",
+  "password": "1234567",
+  "passwordConfirm": "1234567"
+}
+
+
+### И-мэйлийн хэлбэр буруу
+# Хүлээж байгаа: 400
+POST {{host}}/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "not-an-email",
+  "password": "password123",
+  "passwordConfirm": "password123"
+}
+
+
+### Ижил и-мэйлээр дахин бүртгүүлэх
+# Хүлээж байгаа: 409 (400 биш — дата нь зөв, зүгээр мөргөлдөж байна)
+POST {{host}}/api/auth/register
+Content-Type: application/json
+
+{
   "email": "bat@example.com",
-  "password": "өөр-нууц-үг"
+  "password": "password456",
+  "passwordConfirm": "password456"
 }
 
 
 ### Нэвтрэх
 # Хүлээж байгаа: 200 + Set-Cookie header.
 # Хариуны "Headers" хэсгээс Set-Cookie байгаа эсэхийг хараарай.
+# localhost дээр туршиж байгаа бол Secure туг БАЙХ ЁСГҮЙ — байвал
+# браузер cookie-г хаяад нэвтэрч чадахгүй болно (week-4.md, Ойлголт 3).
 POST {{host}}/api/auth/login
 Content-Type: application/json
 
 {
   "email": "bat@example.com",
-  "password": "nuutsug123"
+  "password": "password123"
 }
 
 
@@ -210,7 +262,8 @@ Content-Type: application/json
 
 {
   "email": "saraa@example.com",
-  "password": "nuutsug456"
+  "password": "password456",
+  "passwordConfirm": "password456"
 }
 
 
@@ -220,7 +273,7 @@ Content-Type: application/json
 
 {
   "email": "saraa@example.com",
-  "password": "nuutsug456"
+  "password": "password456"
 }
 
 
@@ -261,8 +314,8 @@ Content-Type: application/json
 {
   "amount": 9999,
   "category": "other",
-  "note": "Хэний зардал болох вэ?",
-  "date": "2026-03-02",
+  "note": "誰のもの？",
+  "date": "2026-08-20",
   "userId": "<А-ГИЙН-USER-ID>"
 }
 

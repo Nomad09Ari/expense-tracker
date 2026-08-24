@@ -3,6 +3,9 @@
 Энэ хуудсанд шинэ ойлголт байхгүй. Зөвхөн орчноо ажиллуулаад, ажлын урсгалыг нэг удаа
 эхнээс нь дуустал туулна. Ойролцоогоор **1.5 цаг**.
 
+> **Аппын бүх текст Япон хэл дээр байна.** Товч, шошго, алдааны мессеж бүгд.
+> Харин энэ `docs/` доторх хичээлүүд Монгол — тэдгээр нь аппын хэсэг биш.
+
 Төгсгөлд нь:
 - localhost дээр Next.js апп ажиллаж байна
 - GitHub дээр repo байна
@@ -133,8 +136,8 @@ app/settings/page.js   ->  localhost:3000/settings
 export default function Home() {
   return (
     <main className="p-8">
-      <h1 className="text-3xl font-bold">Сайн уу</h1>
-      <p className="mt-2 text-gray-600">Энэ апп ажиллаж байна.</p>
+      <h1 className="text-3xl font-bold">支出管理</h1>
+      <p className="mt-2 text-gray-600">このアプリは動いています。</p>
     </main>
   );
 }
@@ -263,6 +266,7 @@ chore: install prisma           # бусад ажил
 | Шинж тэмдэг | Юу хийх |
 |---|---|
 | `npm run dev` ажиллахгүй | `npm install` дахин ажиллуул |
+| `Turbopack is not supported on this platform` эсвэл `An Application Control policy has blocked this file` | Windows-ийн хамгаалалт Next.js-ийн хурдасгуур файлыг блоклосон байна. `npm run dev -- --webpack` гэж ажиллуул. Арай удаан ч бүрэн ажиллана. Байнга хэрэглэх бол `package.json`-ы `"dev"` мөрийг `"next dev --webpack"` болго |
 | Порт 3000 завгүй гэнэ | Өмнөх серверээ `Ctrl+C`-ээр зогсоо, эсвэл `npm run dev -- -p 3001` |
 | Хуудас цагаан хоосон | Хөтчийн DevTools → **Console** таб нээ. Улаан алдаа байна |
 | Tailwind класс ажиллахгүй | Файлаа хадгалсан уу? `className` бичсэн үү (`class` биш) |

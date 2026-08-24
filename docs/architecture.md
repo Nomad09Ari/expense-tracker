@@ -118,7 +118,7 @@ API-г зөвхөн `requests.http` эсвэл хөтчийн хаягийн м�
 
 ## Хүсэлтийн бүтэн зам
 
-Хэрэглэгч "Нэмэх" товч дархад юу болдог вэ:
+Хэрэглэгч「追加」товч дархад юу болдог вэ:
 
 ```
  1.  ХӨТӨЧ    onSubmit ажиллана, e.preventDefault()
@@ -128,7 +128,7 @@ API-г зөвхөн `requests.http` эсвэл хөтчийн хаягийн м�
  5.  СЕРВЕР   Next.js URL-г харж app/api/expenses/route.js-ийн POST функцийг дуудна
  6.  СЕРВЕР   getCurrentUser() → cookie → token → хэрэглэгч. Байхгүй бол 401
  7.  СЕРВЕР   amount, category-г шалгана. Буруу бол 400
- 8.  СЕРВЕР   lib/db.js → create({ ...body, userId: user.id })
+ 8.  СЕРВЕР   lib/db.js → create({ ...шалгасан талбарууд, userId: user.id })
  9.  СЕРВЕР   Prisma → INSERT INTO expenses …
 10.  СЕРВЕР   Response.json(created, { status: 201 })
 11.  ─────    Хариу буцаж явна
@@ -158,3 +158,5 @@ API-г зөвхөн `requests.http` эсвэл хөтчийн хаягийн м�
 | `data.map is not a function` | Массив ирээгүй. Магадгүй `{ error: … }` ирсэн — `res.ok` шалгаагүй |
 | `Promise { <pending> }` харагдана | `await` дутуу |
 | Дата ирсэн ч refresh хийхэд алга | Серверт бичигдээгүй. `data/*.json` эсвэл Prisma Studio-г хар |
+| Нэвтэрсэн ч дараагийн хүсэлт `401` | Cookie хадгалагдаагүй. DevTools → Application → Cookies. Локал дээр `Secure` туг байвал энэ шалтгаан |
+| `Unexpected end of JSON input` | Файлыг бичиж дуусаагүй байхад уншсан. Атомт бичилт хэрэгтэй (week-2) |

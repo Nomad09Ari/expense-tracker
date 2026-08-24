@@ -11,6 +11,10 @@
 
 Долоо хоногийн төгсгөлд нэг асуудал үлдэнэ. Тэр асуудал 2 дахь долоо хоногийг эхлүүлнэ.
 
+> **Хэрэглэгчид харагдах бүх текст Япон хэл дээр байна.** Товч, шошго, алдааны мессеж,
+> ангиллын нэр — бүгд. Доорх жишээ кодууд ч мөн адил. Тайлбар нь Монголоор, код нь
+> Япон — энэ хоёрыг ялгаж хараарай.
+
 > Даалгавар бүрт **Claude-д өгөх prompt-ын жишээ** болон **гарсан кодыг шалгах**
 > жагсаалт байгаа. Эхлэхийн өмнө [Claude-тай хамт код бичих](claude-ashiglah.md)-ийг
 > нэг уншаарай — тэнд ямар зарчмаар бичсэнийг тайлбарласан.
@@ -39,7 +43,7 @@ export default function MenuItem({ name, price }) {
   return (
     <div className="flex justify-between border-b py-2">
       <span>{name}</span>
-      <span className="text-gray-500">{price}₮</span>
+      <span className="text-gray-500">{price}円</span>
     </div>
   );
 }
@@ -52,8 +56,8 @@ import MenuItem from "./MenuItem";
 export default function Menu() {
   return (
     <div>
-      <MenuItem name="Сүүтэй цай" price={2500} />
-      <MenuItem name="Хар кофе" price={4000} />
+      <MenuItem name="ミルクティー" price={480} />
+      <MenuItem name="ブラックコーヒー" price={380} />
     </div>
   );
 }
@@ -85,9 +89,9 @@ JavaScript-ийн `.map()`-аар массивыг JSX-ийн массив бо�
 
 ```jsx
 const teas = [
-  { id: "t1", name: "Сүүтэй цай", price: 2500 },
-  { id: "t2", name: "Хар кофе", price: 4000 },
-  { id: "t3", name: "Ногоон цай", price: 3000 },
+  { id: "t1", name: "ミルクティー", price: 480 },
+  { id: "t2", name: "ブラックコーヒー", price: 380 },
+  { id: "t3", name: "緑茶", price: 320 },
 ];
 
 export default function Menu() {
@@ -147,7 +151,7 @@ export default function Counter() {
 
   return (
     <button onClick={() => setCount(count + 1)}>
-      Дарсан тоо: {count}
+      押した回数: {count}
     </button>
   );
 }
@@ -230,10 +234,10 @@ export default function SearchBox() {
       <input
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="Хайх..."
+        placeholder="検索…"
         className="border rounded px-3 py-2"
       />
-      <p className="mt-2 text-sm text-gray-500">Хайж байгаа: {query}</p>
+      <p className="mt-2 text-sm text-gray-500">検索中: {query}</p>
     </div>
   );
 }
@@ -297,6 +301,60 @@ const total = visible.reduce((sum, t) => sum + t.price, 0);
 
 ---
 
+## Ойлголт 6 — Хадгалах утга ба харуулах шошго хоёр өөр
+
+### Асуудал юу вэ
+
+Ангиллыг датандаа шууд `"食費"` гэж хадгалвал юу болох вэ?
+
+- Маргааш "英語にも対応したい" гэвэл бүх хуучин мөрөө засах хэрэгтэй болно
+- `"食費"` гэж бичихдээ нэг тэмдэгт алдвал шүүлтүүр чимээгүйхэн ажиллахаа болино
+- Кодоо уншиж байгаа хүн ямар утгууд байж болохыг мэдэхгүй
+
+### Хэрхэн шийддэг вэ
+
+**Датад машинд зориулсан утга, дэлгэцэд хүнд зориулсан шошго.** Хоёрын хооронд
+хөрвүүлэгч нэг файл байна.
+
+```js
+// lib/categories.js
+export const CATEGORIES = [
+  { value: "food", label: "食費", emoji: "🍜" },
+  { value: "transport", label: "交通費", emoji: "🚌" },
+  { value: "other", label: "その他", emoji: "📦" },
+];
+
+export function categoryLabel(value) {
+  return CATEGORIES.find((c) => c.value === value)?.label ?? value;
+}
+```
+
+- Файлд, өгөгдлийн санд, API-д → үргэлж `"food"`
+- Дэлгэц дээр → `categoryLabel("food")` → `"食費"`
+
+Шошгыг өөрчлөхөд датаны нэг ч мөр хөндөгдөхгүй. Мөн ямар ангилал байж болохыг мэдэх
+ганц газар үүснэ — шүүлтүүр, форм, шалгалт бүгд эндээс уншина.
+
+### Мөнгө ч мөн адил
+
+Датад **тоо** (`12000`), дэлгэцэд **форматлагдсан текст**:
+
+```js
+const yen = new Intl.NumberFormat("ja-JP", {
+  style: "currency",
+  currency: "JPY",
+  maximumFractionDigits: 0,
+});
+
+export function formatYen(amount) {
+  return yen.format(amount);   // 12000 -> ￥12,000
+}
+```
+
+`Intl` бол хөтөчид бэлэн байдаг. Таслал тавих кодоо өөрөө бичих шаардлагагүй.
+
+---
+
 ## Даалгавар 1.1 — Жагсаалт харуулах
 
 **Зорилго:** хуурамч датаг компонентоор дамжуулан дэлгэц дээр гаргах.
@@ -305,31 +363,41 @@ const total = visible.reduce((sum, t) => sum + t.price, 0);
 
 **Алхмууд**
 
-1. `data/sample.js` файл үүсгээд 5-6 зардлын массив бич. Талбарууд:
-   `id`, `amount`, `category`, `note`, `date`. Ангилал нь `food`, `transport`, `other`.
-2. `components/ExpenseItem.js` — нэг зардлыг харуулна. Props-оор зардлаа хүлээж авна.
-3. `components/ExpenseList.js` — массив хүлээж авч `.map()`-аар `ExpenseItem`-үүд гаргана.
-4. `app/page.js` — `sample.js`-с датаг импортлож `ExpenseList` рүү дамжуулна.
+1. `lib/categories.js` үүсгэ (Ойлголт 6-д жишээ бий): `CATEGORIES`, `categoryLabel()`,
+   `formatYen()`.
+2. `data/sample.js` файл үүсгээд 5-6 зардлын массив бич. Талбарууд:
+   `id`, `amount`, `category`, `note`, `date`. `category` нь `food`, `transport`, `other`.
+   `note` нь Япон текст (`"昼食"`, `"地下鉄"`, `"家賃"` гэх мэт).
+3. `components/ExpenseItem.js` — нэг зардлыг харуулна. Props-оор зардлаа хүлээж авна.
+   Ангиллыг `categoryLabel()`-ээр, дүнг `formatYen()`-ээр гаргана.
+4. `components/ExpenseList.js` — массив хүлээж авч `.map()`-аар `ExpenseItem`-үүд гаргана.
+5. `app/page.js` — `sample.js`-с датаг импортлож `ExpenseList` рүү дамжуулна.
+6. `app/layout.js` — `lang` нь `"ja"`, `title` нь `"支出管理"` болго.
 
 **Claude-д өгөх prompt-ын жишээ**
 
 ```
 Next.js App Router, JavaScript (TypeScript биш), Tailwind CSS.
+アプリの UI テキストはすべて日本語。
 
-Зардлын жагсаалт харуулах хоёр компонент хэрэгтэй байна:
+Зардлын жагсаалт харуулах компонентууд хэрэгтэй байна:
 
-1. components/ExpenseItem.js — нэг зардлыг харуулна. Props: amount, category, note, date.
-   Картан хэлбэртэй, дүн нь баруун талдаа, том, тод.
-2. components/ExpenseList.js — expenses гэсэн массив props авч, .map()-аар ExpenseItem
+1. lib/categories.js — CATEGORIES 配列 (value: food/transport/other, label: 食費/交通費/その他,
+   emoji), categoryLabel(value), formatYen(amount) を Intl.NumberFormat("ja-JP") で。
+2. components/ExpenseItem.js — нэг зардлыг харуулна. Props: amount, category, note, date.
+   Картан хэлбэртэй, дүн нь баруун талдаа, том, тод. カテゴリは categoryLabel で日本語表示、
+   金額は formatYen で。
+3. components/ExpenseList.js — expenses гэсэн массив props авч, .map()-аар ExpenseItem
    гаргана. key нь зардлын id байна.
 
 Хязгаарлалт:
 - Зөвхөн Tailwind. Тусдаа CSS файл бүү үүсгэ.
 - useState бүү ашигла, энэ алхамд зөвхөн харуулна.
 - Шинэ сан бүү суулга.
+- category の値は英語のまま (food/transport/other)。画面に出す文字だけ日本語。
 
 Датаны хэлбэр:
-{ id: "1", amount: 12000, category: "food", note: "Өдрийн хоол", date: "2026-03-02" }
+{ id: "1", amount: 12000, category: "food", note: "昼食", date: "2026-08-20" }
 ```
 
 > Prompt-д ямар талбар байгааг **бодит жишээгээр** үзүүлж байгааг анзаараарай. Үүнгүйгээр
@@ -339,6 +407,8 @@ Next.js App Router, JavaScript (TypeScript биш), Tailwind CSS.
 
 - [ ] `ExpenseItem` дотор `useState` **байхгүй** (энэ алхамд хэрэггүй)
 - [ ] `key` нь `expense.id`, `index` **биш**
+- [ ] Дэлгэц дээр `food` биш **`食費`** харагдаж байна
+- [ ] Дүн `￥12,000` хэлбэртэй, `12000` биш
 - [ ] `className` бичсэн (`class` биш)
 - [ ] Тусдаа `.css` файл үүсгээгүй
 - [ ] Мөр бүрийг тайлбарлаж чадаж байна
@@ -379,21 +449,24 @@ Next.js App Router, JavaScript (TypeScript биш), Tailwind CSS.
 **Claude-д өгөх prompt-ын жишээ**
 
 ```
-Next.js App Router, JavaScript, Tailwind.
+Next.js App Router, JavaScript, Tailwind。UI テキストはすべて日本語。
 
 app/page.js дотор зардлын жагсаалт байгаа. Одоо нэмэх, устгах хоёрыг нэмнэ.
 
 1. app/page.js-д expenses-ийг useState болго.
 2. components/ExpenseForm.js — amount, category, note гурван талбар. category нь select
-   (food / transport / other). Илгээхэд onAdd(newExpense) гэсэн props функц дуудна,
-   дараа нь формоо цэвэрлэнэ. id-г crypto.randomUUID()-ээр үүсгэнэ.
-3. ExpenseItem дээр устгах товч нэмнэ. onDelete(id) гэсэн props функц дуудна.
-4. Жагсаалтын доор нийт дүн харуул.
+   (CATEGORIES から生成、表示は 食費/交通費/その他)。Илгээхэд onAdd(newExpense) гэсэн
+   props функц дуудна, дараа нь формоо цэвэрлэнэ. id-г crypto.randomUUID()-ээр үүсгэнэ.
+   プレースホルダは「金額」「メモ（任意）」。
+3. ExpenseItem дээр устгах товч нэмнэ. onDelete(id) гэсэн props функц дуудна。
+   aria-label は「削除」。
+4. Жагсаалтын доор нийт дүн харуул (formatYen で)。
 
 Хязгаарлалт:
 - Бүх input controlled байх (value + onChange).
 - Массив state-ийг push-аар бүү өөрчил, шинэ массив үүсгэ.
 - Шинэ сан бүү нэм.
+- 画面に出る文字はすべて日本語。select の value は英語のまま。
 
 Одоогийн app/page.js:
 <кодоо энд тавь>
@@ -436,27 +509,31 @@ app/page.js дотор зардлын жагсаалт байгаа. Одоо н
 
 **Алхмууд**
 
-1. Ангиллын шүүлтүүр: Бүгд / Хоол / Унаа / Бусад. Сонгосон ангиллынх нь харагдана.
+1. Ангиллын шүүлтүүр: **すべて / 食費 / 交通費 / その他**. Сонгосон ангиллынх нь харагдана.
+   Товчнуудыг `CATEGORIES`-аас үүсгэ — гараар дөрвөн товч бичиж болохгүй.
 2. Нийт дүн нь **шүүгдсэн** жагсаалтын дүн болно.
-3. Хоосон төлөв: зардал байхгүй үед "Одоохондоо зардал алга" гэсэн эвтэйхэн мессеж.
+3. Хоосон төлөв: зардал байхгүй үед **「まだ支出がありません」**, шүүлтээр хоосорсон үед
+   **「このカテゴリの支出はありません」**.
 4. Tailwind-ээр цэгцтэй болго. Энэ бол чиний талбар — цаг гаргаж, сайхан болго.
 5. PR нээж, Vercel-ийн preview линкээр нь хараад, нэгтгэ.
 
 **Claude-д өгөх prompt-ын жишээ**
 
 ```
-Next.js App Router, JavaScript, Tailwind.
+Next.js App Router, JavaScript, Tailwind。UI テキストはすべて日本語。
 
 app/page.js дээр ангиллын шүүлтүүр нэмнэ.
 
-- Бүгд / food / transport / other гэсэн 4 товч. Сонгогдсон нь өөр өнгөтэй харагдана.
+- 「すべて」+ CATEGORIES から生成した3つ、計4つのボタン。選択中は色を変える。
 - Сонгосон ангиллын зардлууд л жагсаалтад харагдана.
-- Нийт дүн нь шүүгдсэн жагсаалтын дүн байна.
-- Зардал байхгүй үед хоосон төлөвийн мессеж гарна.
+- Нийт дүн нь шүүгдсэн жагсаалтын дүн байна。
+- 空のときのメッセージ: 支出ゼロなら「まだ支出がありません」、
+  絞り込みで0件なら「このカテゴリの支出はありません」。
 
 Хязгаарлалт:
 - Шүүгдсэн жагсаалтыг тусдаа useState болгож БҮҮ хадгал. expenses болон сонгосон
   ангиллаас ажиллах үедээ бодож гарга.
+- ボタンのラベルをハードコードしない。CATEGORIES から作る。
 - Шинэ сан бүү нэм.
 
 Одоогийн app/page.js:
@@ -474,6 +551,8 @@ app/page.js дээр ангиллын шүүлтүүр нэмнэ.
 - [ ] Хоосон төлөв нь `expenses.length === 0` **ба** шүүлтээр хоосорсон хоёр тохиолдлыг
       хоёуланг нь зохицуулж байна
 - [ ] Сонгогдсон товч нүдэнд ялгарч харагдаж байна
+- [ ] Шүүлтүүрийн товчнууд `CATEGORIES`-аас үүссэн, гараар бичигдээгүй
+- [ ] Дэлгэц дээр Монгол эсвэл Англи үг **үлдээгүй**
 
 **Дууссан гэж үзэх шалгуур**
 
