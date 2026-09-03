@@ -42,4 +42,5 @@ next-env.d.ts
 
 # ажиллах явцын дата — git-д ХЭЗЭЭ Ч оруулахгүй.
 # data/users.json дотор и-мэйл болон нууц үгийн hash хадгалагдана.
-/data
+/data/*
+!/data/sample.js
