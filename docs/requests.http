@@ -93,7 +93,7 @@ POST {{host}}/api/expenses
 Content-Type: application/json
 
 {
-  "amount": 5000,
+  "amount": 1000,
   "category": "puppies",
   "date": "2026-08-20"
 }
@@ -106,7 +106,7 @@ Content-Type: application/json
 
 ### Дүнг өөрчлөх
 # Хүлээж байгаа: 200 + шинэчилсэн зардал
-PATCH {{host}}/api/expenses/<ID>
+PATCH {{host}}/api/expenses/fa04e7ac-7de7-46eb-a183-fd0ec4166301
 Content-Type: application/json
 
 {
@@ -130,6 +130,7 @@ PATCH {{host}}/api/expenses/ene-id-baihgui
 Content-Type: application/json
 
 {
+
   "amount": 999
 }
 
