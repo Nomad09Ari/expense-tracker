@@ -324,3 +324,64 @@ Content-Type: application/json
 # Эхлээд logout хий, дараа нь илгээ.
 # Хүлээж байгаа: 401
 GET {{host}}/api/expenses
+
+
+###############################################################################
+# ДОЛОО ХОНОГ 5 — Гар утасны апп (токенээр нэвтрэх)
+###############################################################################
+
+### Токен авах
+# Хүлээж байгаа: 200 + { "token": "...", "user": {...} }
+# /api/auth/login-ээс ялгаатай нь: Set-Cookie БАЙХГҮЙ, токен нь body дотор ирнэ.
+POST {{host}}/api/auth/token
+Content-Type: application/json
+
+{
+  "email": "bat@example.com",
+  "password": "password123"
+}
+
+
+### Буруу нууц үгээр токен авах
+# Хүлээж байгаа: 401. Мессеж нь /api/auth/login-тэйгээ ИЖИЛ байх ёстой
+POST {{host}}/api/auth/token
+Content-Type: application/json
+
+{
+  "email": "bat@example.com",
+  "password": "buruu-nuuts-ug"
+}
+
+
+### Токеноор зардлаа авах (гар утасны апп яг үүнийг хийнэ)
+# <TOKEN> хэсгийг дээрх хариунаас хуулж ав.
+# Хүлээж байгаа: 200 + зөвхөн тухайн хэрэглэгчийн зардал
+GET {{host}}/api/expenses
+Authorization: Bearer <TOKEN>
+
+
+### Токеноор зардал нэмэх
+# Хүлээж байгаа: 201
+POST {{host}}/api/expenses
+Content-Type: application/json
+Authorization: Bearer <TOKEN>
+
+{
+  "amount": 780,
+  "category": "food",
+  "note": "モバイルから追加",
+  "date": "2026-09-20"
+}
+
+
+### Буруу токеноор хандах
+# Хүлээж байгаа: 401
+GET {{host}}/api/expenses
+Authorization: Bearer ene-token-buruu
+
+
+### Cookie-гийн нэвтрэлт ХЭВЭЭРЭЭ ажиллаж байгаа эсэх
+# Токен нэмсэн нь вэб талыг эвдээгүй гэдгийг батлах шалгалт.
+# Эхлээд /api/auth/login-ээр нэвтэрч, дараа нь Authorization header-ГҮЙГЭЭР илгээ.
+# Хүлээж байгаа: 200
+GET {{host}}/api/expenses
