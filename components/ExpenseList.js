@@ -44,9 +44,7 @@ export default function ExpenseList({ expenses, onDelete }) {
       </div>
 
       {expenses.length === 0 ? (
-        <p className="py-8 text-center text-gray-500">
-          まだ支出がありません
-        </p>
+        <p className="py-8 text-center text-gray-500">まだ支出がありません</p>
       ) : filteredExpenses.length === 0 ? (
         <p className="py-8 text-center text-gray-500">
           このカテゴリの支出はありません
