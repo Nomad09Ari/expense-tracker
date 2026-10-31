@@ -24,6 +24,7 @@ export default function Home() {
     try {
       const data = await getExpenses();
       setExpenses(data);
+      setError(null);
     } catch (e) {
       setError(`${e.message}, エラーが出ました！`);
     } finally {
@@ -36,7 +37,7 @@ export default function Home() {
     try {
       await createExpense(newExpense);
 
-      load();
+      await load();
       show("追加に成功しました。", "success");
     } catch (e) {
       console.error(e);
@@ -51,7 +52,7 @@ export default function Home() {
     try {
       await deleteExpense(id);
 
-      load();
+      await load();
       show("削除に成功しました。", "success");
     } catch (e) {
       console.error(e);
@@ -61,12 +62,28 @@ export default function Home() {
     }
   }
 
+  //エラーの場合に再読込するための関数
+  function handleReload() {
+    setLoading(true);
+    load();
+  }
+
   let content;
 
   if (loading) {
     content = <p>読み込み中...</p>;
   } else if (error) {
-    content = <p>{error}</p>;
+    content = (
+      <div>
+        <p>{error}</p>
+        <button
+          onClick={handleReload}
+          className="mt-4 rounded bg-gray-900 px-4 py-2 text-white hover:bg-gray-900"
+        >
+          再読み込み
+        </button>
+      </div>
+    );
   } else {
     content = (
       <div className="space-y-8">
