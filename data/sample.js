@@ -37,9 +37,9 @@ const sampleExpenses = [
   {
     id: "6",
     category: "other",
-         amount: 15000,
+    amount: 15000,
     date: "2026-05-15",
-      note: "洋服購入",
-   },
+    note: "洋服購入",
+  },
 ];
 export default sampleExpenses;
