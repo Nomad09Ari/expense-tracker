@@ -78,7 +78,7 @@ export default function Home() {
         <p>{error}</p>
         <button
           onClick={handleReload}
-          className="mt-4 rounded bg-gray-900 px-4 py-2 text-white hover:bg-gray-900"
+          className="mt-4 rounded bg-gray-900 px-4 py-2 text-white hover:bg-gray-700"
         >
           再読み込み
         </button>
