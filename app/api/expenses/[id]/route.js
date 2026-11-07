@@ -21,6 +21,9 @@ export async function PATCH(request, { params }) {
   どんなid値が来ても同じroute.jsが呼ばれ、
   その都度URLから値を読み取ります。*/
   const body = await request.json();
+  if (Object.hasOwn(body, "id")) {
+    return Response.json({ message: "idは変更できません" }, { status: 400 });
+  }
   const updatedExpense = await update(id, body);
   if (!updatedExpense) {
     return Response.json(

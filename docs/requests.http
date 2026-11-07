@@ -113,6 +113,15 @@ Content-Type: application/json
   "amount": 15000
 }
 
+### ID байх үед дүнг өөрчлөх
+# Хүлээж байгаа: 400 + { "message": "idは変更できません" }
+PATCH {{host}}/api/expenses/fa04e7ac-7de7-46eb-a183-fd0ec4166301
+Content-Type: application/json
+
+{
+  "id" : "fb04e7ac-7de7-46eb-a183-fd0ec4166301",
+  "amount": 15000
+}
 
 ### Зардал устгах
 # Хүлээж байгаа: 204 (эсвэл 200)
