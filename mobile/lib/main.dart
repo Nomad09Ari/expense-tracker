@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:expense_mobile/features/expenses/presentation/expense_list_screen.dart';
+import 'package:expense_mobile/features/expenses/data/expenses_sample.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const ExpenseListScreen(),
+      home: ExpenseListScreen(expenses: expensesSample),
     );
   }
 }
