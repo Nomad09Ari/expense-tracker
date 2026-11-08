@@ -113,6 +113,15 @@ Content-Type: application/json
   "amount": 15000
 }
 
+### Байхгүй зардлыг өөрчлөх
+# Хүлээж байгаа: 404
+PATCH {{host}}/api/expenses/ene-id-baihgui
+Content-Type: application/json
+
+{
+  "amount": 999
+}
+
 ### ID байх үед дүнг өөрчлөх
 # Хүлээж байгаа: 400 + { "message": "idは変更できません" }
 PATCH {{host}}/api/expenses/fa04e7ac-7de7-46eb-a183-fd0ec4166301
@@ -123,26 +132,31 @@ Content-Type: application/json
   "amount": 15000
 }
 
+### Зардлын дүн утга буруу байх үед
+# Хүлээж байгаа: 400 + {validationError: "金額は正の数である必要があります"}
+PATCH {{host}}/api/expenses/4c17d231-15ba-422e-b2d7-ee5d524cc736
+Content-Type: application/json
+
+{
+  "amount": -1000
+}
+
+### Зардлын ангилал утга буруу байх үед
+# Хүлээж байгаа: 400 + {validationError: "カテゴリは必須です"}
+PATCH {{host}}/api/expenses/4c17d231-15ba-422e-b2d7-ee5d524cc736
+Content-Type: application/json
+
+{
+  "category": "puppies"
+}
+
 ### Зардал устгах
 # Хүлээж байгаа: 204 (эсвэл 200)
 DELETE {{host}}/api/expenses/<ID>
 
-
 ### Байхгүй зардлыг устгах
 # Хүлээж байгаа: 404 — 500 БИШ
 DELETE {{host}}/api/expenses/ene-id-baihgui
-
-
-### Байхгүй зардлыг өөрчлөх
-# Хүлээж байгаа: 404
-PATCH {{host}}/api/expenses/ene-id-baihgui
-Content-Type: application/json
-
-{
-
-  "amount": 999
-}
-
 
 ###############################################################################
 # ДОЛОО ХОНОГ 4 — Нэвтрэлт
