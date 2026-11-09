@@ -21,7 +21,11 @@ class ExpenseListScreen extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final expense = expenses[index];
                       return ListTile(
-                        title: Text(expense.note ?? 'No Note'),
+                        title: Text(
+                          expense.note ?? 'No Note',
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        ),
                         subtitle: Text(expense.category),
                         trailing: Text('${expense.amount}円'),
                       );
