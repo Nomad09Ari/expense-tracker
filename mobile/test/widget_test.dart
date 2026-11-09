@@ -44,4 +44,23 @@ void main() {
     expect(expenseNote.maxLines, 1);
     expect(expenseNote.overflow, TextOverflow.ellipsis);
   });
+
+  testWidgets('文字を3倍にしても、画面が崩れないで表示される', (WidgetTester tester) async {
+    // 文字サイズ（倍率）を3.0倍に変更
+    tester.platformDispatcher.textScaleFactorTestValue = 3.0;
+    addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+    // 画面サイズをスマホ向け設定
+    tester.view.physicalSize = const Size(400, 700);
+    addTearDown(tester.view.resetPhysicalSize);
+
+    tester.view.devicePixelRatio = 1.0; // 計算を簡単にするため1.0に固定
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await tester.pumpWidget(
+      MaterialApp(home: ExpenseListScreen(expenses: expensesSample)),
+    );
+
+    // nullじゃなければ、エラー内容が見れる
+    expect(tester.takeException(), isNull);
+  });
 }
