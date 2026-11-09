@@ -14,17 +14,19 @@ class ExpenseListScreen extends StatelessWidget {
       body: Column(
         children: [
           Expanded(
-            child: ListView.builder(
-              itemCount: expenses.length,
-              itemBuilder: (context, index) {
-                final expense = expenses[index];
-                return ListTile(
-                  title: Text(expense.note ?? 'No Note'),
-                  subtitle: Text(expense.category),
-                  trailing: Text('${expense.amount}円'),
-                );
-              },
-            ),
+            child: expenses.isEmpty
+                ? const Center(child: Text('支出がありません'))
+                : ListView.builder(
+                    itemCount: expenses.length,
+                    itemBuilder: (context, index) {
+                      final expense = expenses[index];
+                      return ListTile(
+                        title: Text(expense.note ?? 'No Note'),
+                        subtitle: Text(expense.category),
+                        trailing: Text('${expense.amount}円'),
+                      );
+                    },
+                  ),
           ),
           ListTile(
             title: const Text('合計'),
