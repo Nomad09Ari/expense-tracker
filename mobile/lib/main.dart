@@ -1,3 +1,4 @@
+import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:expense_mobile/features/expenses/presentation/expense_list_screen.dart';
 import 'package:expense_mobile/features/expenses/data/expenses_sample.dart';
@@ -6,18 +7,27 @@ void main() {
   runApp(const MyApp());
 }
 
+final _router = GoRouter(
+  routes: [
+    GoRoute(
+      path: '/', // このURLの時この画面を出す
+      builder: (context, state) => ExpenseListScreen(expenses: expensesSample),
+    ),
+  ],
+);
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: '支出管理アプリ',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: ExpenseListScreen(expenses: expensesSample),
+      routerConfig: _router,
     );
   }
 }
