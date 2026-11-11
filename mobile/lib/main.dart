@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:expense_mobile/features/expenses/presentation/expense_list_screen.dart';
+import 'package:expense_mobile/features/expenses/presentation/expense_detail_screen.dart';
 import 'package:expense_mobile/features/expenses/data/expenses_sample.dart';
 
 void main() {
@@ -12,6 +13,21 @@ final _router = GoRouter(
     GoRoute(
       path: '/', // このURLの時この画面を出す
       builder: (context, state) => ExpenseListScreen(expenses: expensesSample),
+    ),
+
+    GoRoute(
+      path: '/expenses/:id',
+      builder: (context, state) {
+        final id = state.pathParameters['id']!;
+        final expense = expensesSample
+            .where((expense) => expense.id == id)
+            .firstOrNull;
+
+        if (expense == null) {
+          return const Text('該当支出がありません');
+        }
+        return ExpenseDetailScreen(expense: expense);
+      },
     ),
   ],
 );
