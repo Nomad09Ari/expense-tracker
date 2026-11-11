@@ -1,4 +1,5 @@
-import { remove, update } from "@/lib/db";
+import { remove, update, getById } from "@/lib/db";
+import { validateExpense } from "@/lib/validation";
 
 export async function DELETE(request, { params }) {
   //paramsはrequestとは別の、第2引数({ params })から来ます。
@@ -21,12 +22,24 @@ export async function PATCH(request, { params }) {
   どんなid値が来ても同じroute.jsが呼ばれ、
   その都度URLから値を読み取ります。*/
   const body = await request.json();
-  const updatedExpense = await update(id, body);
-  if (!updatedExpense) {
+  if (Object.hasOwn(body, "id")) {
+    return Response.json({ message: "idは変更できません" }, { status: 400 });
+  }
+
+  const existingExpense = await getById(id);
+  if (!existingExpense) {
     return Response.json(
       { message: "支出が見つかりませんでした" },
       { status: 404 }
     );
   }
+  const mergedExpense = { ...existingExpense, ...body };
+  const validationError = validateExpense(mergedExpense);
+  if (validationError) {
+    return Response.json({ message: validationError }, { status: 400 });
+  }
+
+  const updatedExpense = await update(id, mergedExpense);
+
   return Response.json(updatedExpense, { status: 200 });
 }
