@@ -133,7 +133,7 @@ Content-Type: application/json
 }
 
 ### Зардлын дүн утга буруу байх үед
-# Хүлээж байгаа: 400 + {validationError: "金額は正の数である必要があります"}
+# Хүлээж байгаа: 400 + {message: "金額は正の数である必要があります"}
 PATCH {{host}}/api/expenses/4c17d231-15ba-422e-b2d7-ee5d524cc736
 Content-Type: application/json
 
@@ -142,7 +142,7 @@ Content-Type: application/json
 }
 
 ### Зардлын ангилал утга буруу байх үед
-# Хүлээж байгаа: 400 + {validationError: "カテゴリは必須です"}
+# Хүлээж байгаа: 400 + {message: "カテゴリは必須です"}
 PATCH {{host}}/api/expenses/4c17d231-15ba-422e-b2d7-ee5d524cc736
 Content-Type: application/json
 
