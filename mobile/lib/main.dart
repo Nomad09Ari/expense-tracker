@@ -22,10 +22,7 @@ final _router = GoRouter(
         final expense = expensesSample
             .where((expense) => expense.id == id)
             .firstOrNull;
-
-        if (expense == null) {
-          return const Text('該当支出がありません');
-        }
+            
         return ExpenseDetailScreen(expense: expense);
       },
     ),

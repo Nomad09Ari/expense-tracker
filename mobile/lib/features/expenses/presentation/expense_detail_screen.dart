@@ -3,10 +3,19 @@ import 'package:expense_mobile/features/expenses/domain/expense.dart';
 
 class ExpenseDetailScreen extends StatelessWidget {
   const ExpenseDetailScreen({super.key, required this.expense});
-  final Expense expense;
+  final Expense? expense;
 
   @override
   Widget build(BuildContext context) {
+    final expense = this.expense;
+
+    if (expense == null) {
+      return Scaffold(
+        appBar: AppBar(title: const Text('Expense detail')),
+        body: const Center(child: Text('該当支出がありません')),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(title: const Text('Expense Detail')),
       body: Column(
