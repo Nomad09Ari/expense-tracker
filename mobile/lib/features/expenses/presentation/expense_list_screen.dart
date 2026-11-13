@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:expense_mobile/features/expenses/application/expense_calculation.dart';
 import 'package:expense_mobile/features/expenses/domain/expense.dart';
 
@@ -28,6 +29,7 @@ class ExpenseListScreen extends StatelessWidget {
                         ),
                         subtitle: Text(expense.category),
                         trailing: Text('${expense.amount}円'),
+                        onTap: () => context.go('/expenses/${expense.id}'),
                       );
                     },
                   ),

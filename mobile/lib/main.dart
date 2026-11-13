@@ -13,18 +13,20 @@ final _router = GoRouter(
     GoRoute(
       path: '/', // このURLの時この画面を出す
       builder: (context, state) => ExpenseListScreen(expenses: expensesSample),
-    ),
 
-    GoRoute(
-      path: '/expenses/:id',
-      builder: (context, state) {
-        final id = state.pathParameters['id']!;
-        final expense = expensesSample
-            .where((expense) => expense.id == id)
-            .firstOrNull;
-            
-        return ExpenseDetailScreen(expense: expense);
-      },
+      routes: [
+        GoRoute(
+          path: 'expenses/:id',
+          builder: (context, state) {
+            final id = state.pathParameters['id']!;
+            final expense = expensesSample
+                .where((expense) => expense.id == id)
+                .firstOrNull;
+
+            return ExpenseDetailScreen(expense: expense);
+          },
+        ),
+      ],
     ),
   ],
 );
