@@ -27,4 +27,13 @@ void main() {
     expect(expenseNote.maxLines, isNull);
     expect(expenseNote.overflow, isNull);
   });
+
+  testWidgets('存在しない支出のとき、「該当支出がありません」が表示される', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp(home: ExpenseDetailScreen(expense: null)),
+    );
+
+    expect(find.text('該当支出がありません'), findsOneWidget);
+    expect(find.text('カテゴリ'), findsNothing);
+  });
 }
